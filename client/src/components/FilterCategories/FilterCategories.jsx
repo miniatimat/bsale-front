@@ -92,20 +92,17 @@ export default function FilerCategories() {
               {categories.name}
               <input
                 className="checkbox-category"
-                value={categories.name}
-                type="checkbox"
+                value={categories.id}
+                type=""
                 id={categories.name}
                 onChange={(e) => {
-                  handleSelect(e);
+                  handleSearch(e);
                 }}
               />
             </label>
           ))}
         </div>
         <li className="dropdown-divider"></li>
-        <button type="submit" className="filter-search-btn">
-          {t("searchBar.placeholder")}
-        </button>
       </form>
     </section>
   );

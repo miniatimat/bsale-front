@@ -1,9 +1,6 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { FreeMode, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react/swiper-react.js";
-import SlideMostSold from "../../components/SlideMostSold/SlideMostSold.jsx";
-import SlideRating from "../../components/SlideRating/SlideRating.jsx";
-import SlideRecommended from "../../components/SlideRecommended/SlideRecommended";
 import "./Home.scss";
 import banner1 from "media/banner1.jpg";
 import banner2 from "media/banner2.jpg";
@@ -14,32 +11,23 @@ import { BsCreditCard2Back } from "react-icons/bs";
 import { TiArrowSync } from "react-icons/ti";
 import { AiOutlineStar } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
+import {useStore} from "../../context/store";
+import {fetchCategories, fetchProducts} from "../../redux/actions/actions";
+
+
 export default function Home() {
   const { t } = useTranslation();
+  const [state, dispatch] = useStore();
+  useEffect(async ()=>{
+    await fetchProducts(dispatch)
+    await fetchCategories(dispatch)
+  }, [])
+
+  console.log(state)
   return (
     <div className="color">
       <div className="div-slide-vertical">
-        <Swiper
-          loop={true}
-          modules={[Navigation, FreeMode]}
-          navigation={true}
-          freeMode={true}
-          pagination={{
-            clickable: true,
-          }}
-          className="mySwiper"
-        >
-          <SwiperSlide>
-            <img className="home-banner" src={banner1} alt="" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img className="home-banner" src={banner2} alt="" />
-          </SwiperSlide>
 
-          <SwiperSlide>
-            <img className="home-banner" src={banner4} alt="" />
-          </SwiperSlide>
-        </Swiper>
       </div>
       <div className="promo-container">
         <PromoCard
@@ -58,12 +46,6 @@ export default function Home() {
           icon={<AiOutlineStar size={30} />}
         />
       </div>
-      <p className="home-title-carrusel">{t("home.recommended")}</p>
-      <SlideRecommended />
-      <p className="home-title-carrusel">{t("home.rating")}</p>
-      <SlideRating />
-      <p className="home-title-carrusel">{t("home.mostSold")}</p>
-      <SlideMostSold />
     </div>
   );
 }

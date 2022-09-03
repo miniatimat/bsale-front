@@ -1,9 +1,0 @@
-[
-    {
-        "name": "Owner",
-        "email": "mercadont.libre@gmail.com",
-        "password": "Admin123",
-        "banned": false,
-        "isAdmin": true
-    }
-]

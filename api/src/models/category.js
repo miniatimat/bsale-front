@@ -1,19 +1,17 @@
-const { DataTypes, UUIDV4 } = require('sequelize');
+const { DataTypes } = require('sequelize');
 //
 module.exports = (sequelize) => {
     sequelize.define('category', {
         id: {
-            type: DataTypes.UUID,
+            type: DataTypes.INTEGER,
             allowNull: false,
-            defaultValue: UUIDV4,
-            unique: true,
             primaryKey: true
         },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: true
         }
     },
-        { timestamps: false })
+        { timestamps: false,
+        freezeTableName: true})
 }

@@ -5,10 +5,8 @@ import { useStore } from "../../context/store";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import {
   ORDER_BY_ASCDESC_PRICE,
-  FILTER_BY_PRICE,
 } from "../../redux/actions/actionTypes";
 import { alertSuccess, alertInfo, alertWarning } from "../../helpers/toast";
-import { getFavorites, totalCount } from "../../redux/actions/actions";
 import { useTranslation } from "react-i18next";
 import {
   handleDeleteFavorite,
@@ -67,28 +65,6 @@ export default function SearchedProducts() {
     setMin(e.target.value);
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    let filter = state.searchedProducts;
-    if (min) {
-      filter = filter.filter((product) => product.price >= min);
-    }
-    if (max) {
-      filter = filter.filter((product) => product.price <= max);
-    }
-    if (max && min && parseInt(max) < parseInt(min)) {
-      setError(t("categoriesComp.error_valid_numbers"));
-      filter = [];
-    }
-    if (error) {
-      alertInfo(t("searchedProducts.noValidInputs"));
-      filter = state.filter;
-    }
-    dispatch({
-      type: FILTER_BY_PRICE,
-      payload: filter,
-    });
-  };
   const handleOrder = (e) => {
     e.preventDefault();
     dispatch({
@@ -97,27 +73,7 @@ export default function SearchedProducts() {
     });
   };
 
-  useEffect(() => {
-    if (person) {
-      getFavorites(dispatch, person);
-    }
-    handleRedirect();
-  }, []);
-  useEffect(() => {
-    let myUser = JSON.parse(localStorage.getItem("myUser"));
-    let myCart = JSON.parse(localStorage.getItem(myUser));
-    setUser(myUser);
-    if (myCart) {
-      setCart(myCart);
-      totalCount(dispatch);
-    } else {
-      setCart([]);
-    }
-  }, []);
-  useEffect(() => {
-    localStorage.setItem(user, JSON.stringify(cart));
-    totalCount(dispatch);
-  }, [cart]);
+
 
   return (
     <div className="searched-container">
@@ -126,30 +82,6 @@ export default function SearchedProducts() {
           <span className="priceRange-text">
             {t("categoriesComp.priceRange")}
           </span>
-          <form className="range-form" onSubmit={handleSearch}>
-            <input
-              className="range-input"
-              id="filter2"
-              type="number"
-              value={min}
-              placeholder="MIN"
-              onChange={handleChangeMin}
-            />
-          </form>
-          -
-          <form className="range-form" onSubmit={handleSearch}>
-            <input
-              className="range-input"
-              id="filter"
-              type="number"
-              value={max}
-              placeholder="MAX"
-              onChange={handleChangeMax}
-            />
-          </form>
-          <div className="searched-btn">
-            <IoSearchSharp size={25} onClick={handleSearch} />
-          </div>
         </div>
         <div className="order-options">
           <label className="order-label" htmlFor="">

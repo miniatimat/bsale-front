@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { ProductCart } from "../ProductCart/ProductCart";
 import { totalPrice } from "./actionsCart";
-import { totalCount } from "../../redux/actions/actions";
 import accounting from "accounting";
 import { useTranslation } from "react-i18next";
 import "./Cart.scss";
@@ -41,14 +40,12 @@ export const Cart = () => {
     }
     if (search === "?buy=noStock") {
       alertWarning(t("cart.noStock"));
-      totalCount(dispatch);
       history.push('/home')
     }
     if (search === "?buy=true") {
       localStorage.removeItem(user);
       alertSuccess(t("cart.successfulPurchase"));
       setStorageCart([]);
-      totalCount(dispatch);
     }
 
 
@@ -59,7 +56,6 @@ export const Cart = () => {
     setStorageCart(newLocalStorage);
     localStorage.setItem(user, JSON.stringify(newLocalStorage));
     setPriceTotal(totalPrice());
-    totalCount(dispatch);
     alertInfo(t("cart.removeFromCart"));
     // totalPrice()
   };
@@ -81,7 +77,6 @@ export const Cart = () => {
       setStorageCart([]);
       setPriceTotal(totalPrice());
       localStorage?.removeItem(user);
-      totalCount(dispatch);
       alertInfo(t("cart.removeEverythingFromCart"));
       setTimeout(() => {
         history.push("/home");

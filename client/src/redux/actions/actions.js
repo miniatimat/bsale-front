@@ -2,13 +2,8 @@ import axios from "axios";
 import {
   FETCH_PRODUCTS,
   FETCH_CATEGORIES,
-  FETCH_ADMIN_USER,
-  USER_SESSION,
-  ADMIN_SESSION,
-  GET_FAVORITES,
-  CHANGE_COUNT_PRODUCT,
-  FETCH_MOST_SOLD,
-  FETCH_RATING
+    CATEGORIES_PRODUCT,
+    SEARCH_PRODUCT
 } from "./actionTypes";
 
 export const fetchProducts = async (dispatch) => {
@@ -21,123 +16,35 @@ export const fetchProducts = async (dispatch) => {
   });
 };
 
-export const fetchRating = async (dispatch) => {
-  const fetchedrating = await axios.get(
-    `${process.env.REACT_APP_DOMAIN}/product/recommendation/byRating`
-  );
-  
-  dispatch({
-    type: FETCH_RATING,
-    payload: fetchedrating.data,
-  });
-};
-
-export const fetchMostSold = async (dispatch) => {
-  const fetchedMostSold = await axios.get(
-    `${process.env.REACT_APP_DOMAIN}/product/recommendation/mostSold`
-  );
-  
-  dispatch({
-    type: FETCH_MOST_SOLD,
-    payload: fetchedMostSold.data,
-  });
-};
-
-export const fetchUsers = async (dispatch) => {
-  const fetchedUsers = await axios.get(
-    `${process.env.REACT_APP_DOMAIN}/admin/users`
-  );
-  dispatch({
-    type: FETCH_ADMIN_USER,
-    payload: fetchedUsers.data,
-  });
-};
 export const fetchCategories = async (dispatch) => {
   const fetchedProducts = await axios.get(
-    `${process.env.REACT_APP_DOMAIN}/categories/`
+    `${process.env.REACT_APP_DOMAIN}/category/`
   );
   dispatch({
     type: FETCH_CATEGORIES,
     payload: fetchedProducts.data,
   });
 };
-export const checkSession = (dispatch) => {
-  let logged = false;
-  let loggedUser = JSON.parse(localStorage.getItem("myUser"));
-  if (loggedUser) {
-    logged = true;
-    dispatch({
-      type: USER_SESSION,
-      payload: {
-        data: loggedUser,
-        session: logged,
-      },
-    });
-  } else {
-    dispatch({
-      type: USER_SESSION,
-      payload: {
-        session: logged,
-      },
-    });
-  }
-};
-// export const checkSessionADMIN = async (dispatch) => {
-//   let loggedAdmin = false;
-//   let loggedAdminInfo = JSON.parse(localStorage.getItem("myAdmin"));
-//   if (loggedAdminInfo !== null) {
-//     if (loggedAdminInfo?.data.isAdmin) {
-//       loggedAdmin = true;
-//       await dispatch({
-//         type: ADMIN_SESSION,
-//         payload: {
-//           admin: loggedAdminInfo,
-//           sessionAdmin: loggedAdmin,
-//         },
-//       });
-//     }
-//   } else {
-//     await dispatch({
-//       type: ADMIN_SESSION,
-//       payload: {
-//         sessionAdmin: loggedAdmin,
-//       },
-//     });
-//   }
-// };
-export const getFavorites = async (dispatch, id) => {
-  if (!id) {
-    dispatch({
-      type: GET_FAVORITES,
-      payload: [],
-    });
-  } else {
-    const giveMeFavorites = await axios(
-      `${process.env.REACT_APP_DOMAIN}/user/favorite/${id}`
-    );
-    try {
-      dispatch({
-        type: GET_FAVORITES,
-        payload: giveMeFavorites.data,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-};
 
-export const totalCount = (dispatch) => {
-  let user = JSON.parse(localStorage.getItem("myUser"));
-  let local = JSON.parse(localStorage.getItem(user));
-  if (local) {
-    dispatch({
-      type: CHANGE_COUNT_PRODUCT,
-      payload: local.length,
-    });
-  } else {
-    dispatch({
-      type: CHANGE_COUNT_PRODUCT,
-      payload: 0,
-    });
-  }
-};
+export const filterByCategories = async (dispatch, payload)=>{
+  console.log(payload)
+  const filteredProducts = await axios.post(
+      `${process.env.REACT_APP_DOMAIN}/product/filter`,{categories: payload}
+  )
+  dispatch({
+    type: CATEGORIES_PRODUCT,
+    payload: filteredProducts.data
+  })
+}
+
+export const searchProduct = async (dispatch, payload)=>{
+  const search = await axios.get(
+      `${process.env.REACT_APP_DOMAIN}/product/search?name=${payload}` )
+  dispatch({
+    type: SEARCH_PRODUCT,
+    payload: search.data
+  })
+}
+
+
+
