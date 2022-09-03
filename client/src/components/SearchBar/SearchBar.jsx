@@ -28,17 +28,7 @@ export default function SearchBar() {
     i18next.changeLanguage(lang);
   };
 
-  const handleSuggested = async () => {
-    if (input === "") {
-      setSuggested([]);
-    }
-    if (input !== "") {
-      const res = await axios.get(
-        `${process.env.REACT_APP_DOMAIN}/product/search?name=${input}`
-      );
-      setSuggested(res.data);
-    }
-  };
+
   const handleChange = (e) => {
     setInput(e.target.value);
   };
@@ -61,9 +51,8 @@ export default function SearchBar() {
   useEffect(() => {
     setRedirect(false);
   }, []);
-  useEffect(() => {
-    handleSuggested();
-  }, [input]);
+
+
   return (
     <div className="nav-language-search nav-item">
       {redirect ? <Redirect push to="/search" /> : null}

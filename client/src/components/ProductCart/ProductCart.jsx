@@ -1,31 +1,36 @@
 import React, { useState } from "react";
 import "./ProductCart.scss";
-import { totalPrice } from "../Cart/actionsCart";
 import accounting from "accounting";
 import { MdDeleteForever } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { FiMinusSquare, FiPlusSquare } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import {useStore} from "../../context/store";
+import {alertInfo} from "../../helpers/toast";
+
+
 export const ProductCart = ({
   name,
   stock,
   price,
-  id,
   image,
-  deleteDatatoStorage,
-  viewProduct,
   pos,
-  setPriceTotal,
-  // totalPrice
 }) => {
   let user = JSON.parse(localStorage.getItem("myUser"));
   let yourStorage = JSON.parse(localStorage.getItem(user));
   const [storageCart, setStorageCart] = useState(yourStorage);
   const [permitLess, setPermitLess] = useState(false);
   const [permitMore, setPermitMore] = useState(true);
-  const [count, setCount] = useState(storageCart[pos].quantity);
+  const [state, dispatch] = useStore()
+  const [count, setCount] = useState(state.cart[pos].quantity);
 
   const { t } = useTranslation()
+
+  const deleteDatatoStorage = (name) => {
+    state.cart = state.cart.filter(product => product.name !== name)
+
+    alertInfo(t("cart.removeFromCart"));
+  };
 
   const oneMore = (stock, name, price) => {
     setCount(count + 1);
@@ -33,6 +38,7 @@ export const ProductCart = ({
     if (count + 1 === stock) setPermitMore(false);
     changeAmount(count, name, 1, price);
   };
+
 
   //Funcion para restar producto al carro
   const oneLess = (stock, name, price) => {
@@ -43,12 +49,11 @@ export const ProductCart = ({
   };
 
   let changeAmount = (num, name, SoR, price) => {
-    let articleStogare = yourStorage.find((e) => e.name === name);
+    let articleStogare = state.cart.find((e) => e.name === name);
     articleStogare.quantity = num + SoR;
     articleStogare.totalPrice = Math.round(price * (count + SoR));
     setStorageCart(yourStorage);
     localStorage.setItem(user, JSON.stringify(yourStorage));
-    setPriceTotal(totalPrice());
   };
 
   return (
@@ -58,11 +63,11 @@ export const ProductCart = ({
         <div className="cart-info-details">
           <p className="cart-info-title">{name}</p>
           <p className="cart-info-price">
-            {accounting.formatMoney(price, "U$D ", 0)}
+            {accounting.formatMoney(price, "$ ", 0)}
           </p>
           <div className="cart-info-prices">
             <div className="cart-sum">
-              <span>{t("cart.qty") }{storageCart[pos].quantity}</span>
+              <span>{t("cart.qty") }{state.cart[pos].quantity}</span>
               <div className="cart-btn-sum">
                 {count !== stock ? (
                   <button

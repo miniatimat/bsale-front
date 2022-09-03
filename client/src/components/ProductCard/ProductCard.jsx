@@ -7,7 +7,6 @@ import imgDeleteFavorite from "../../media/heart-delete-cart.png";
 import { alertInfo, alertWarning, alertSuccess } from "../../helpers/toast";
 import accounting from "accounting";
 import { useTranslation } from "react-i18next";
-import { totalCount } from "../../redux/actions/actions";
 export default function ProductCard({
   name,
   price,
@@ -85,21 +84,9 @@ export default function ProductCard({
           <img src={imgAddFavorite} alt="add-favorite" />
         </button>
       )} */}
-        {changeButton ? (
-          <button className="card-btn margin-1" onClick={() => deleteFavorite()}>
-            <img
-              className="fav-btn"
-              src={imgDeleteFavorite}
-              alt="delete-favorite"
-            />
-          </button>
-        ) : (
-          <button className="card-btn margin-1" onClick={() => postFavorite()}>
-            <img className="fav-btn" src={imgAddFavorite} alt="add-favorite" />
-          </button>
-        )}
+
         <div className="price">
-          <p>U$D{price}</p>
+          <p>${price}</p>
         </div>
       </div>
     </div>

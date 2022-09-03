@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { FreeMode, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react/swiper-react.js";
 import "./Home.scss";
@@ -13,15 +13,42 @@ import { AiOutlineStar } from "react-icons/ai";
 import { useTranslation } from "react-i18next";
 import {useStore} from "../../context/store";
 import {fetchCategories, fetchProducts} from "../../redux/actions/actions";
+import ProductCard from "../../components/ProductCard/ProductCard";
+import {alertInfo, alertSuccess, alertWarning} from "../../helpers/toast";
 
+
+function NotFound() {
+  return null;
+}
 
 export default function Home() {
   const { t } = useTranslation();
+  let initialCart = JSON.parse(localStorage.getItem("myCart")) || [];
   const [state, dispatch] = useStore();
+  const [inCart, setInCart] = useState(false);
+  const [cart, setCart] = useState(initialCart);
+
+
+
   useEffect(async ()=>{
     await fetchProducts(dispatch)
     await fetchCategories(dispatch)
   }, [])
+
+  const handleSaveCart = (name, price, image, id) => {
+    let quantity = 1;
+    let totalPrice = price;
+    let products = { name, price, image, id, quantity};
+    let value = state.cart.find((e) => e.name === name);
+    if (value) {
+      setInCart(false);
+      alertInfo(t("home.altAlreadyInCart"));
+    } else {
+      setInCart(true);
+      state.cart.push(products);
+      alertSuccess(t("home.altAddToCart"));
+    }
+  };
 
   console.log(state)
   return (
@@ -30,21 +57,24 @@ export default function Home() {
 
       </div>
       <div className="promo-container">
-        <PromoCard
-          title={t("home.promoCard.return.title")}
-          subtitle={t("home.promoCard.return.subTitle")}
-          icon={<TiArrowSync size={30} />}
-        />
-        <PromoCard
-          title={t("home.promoCard.cuotes.title")}
-          subtitle={t("home.promoCard.cuotes.subTitle")}
-          icon={<BsCreditCard2Back size={30} />}
-        />
-        <PromoCard
-          title={t("home.promoCard.delivery.title")}
-          subtitle={t("home.promoCard.delivery.subTitle")}
-          icon={<AiOutlineStar size={30} />}
-        />
+        <div className="cardsContainer">
+          {state.products.length>0? state.products.map((product) => {
+                if ( typeof (product.url_image) == "string" && product.url_image !== "") {
+                  return (<ProductCard
+                      key={product.id}
+                      id={product.id}
+                      name={product.name}
+                      stock={product.stock}
+                      price={product.price}
+                      image={product.url_image}
+                      discount={product.discount}
+                      handleSaveCart={handleSaveCart}
+                  />)
+                }
+              }):
+              <NotFound/>
+          }
+        </div>
       </div>
     </div>
   );

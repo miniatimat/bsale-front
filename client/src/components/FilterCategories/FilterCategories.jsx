@@ -14,22 +14,18 @@ export default function FilerCategories() {
   const { t } = useTranslation();
   const [state, dispatch] = useStore();
   const [redirect, setRedirect] = useState(false);
-  const [filter, setFilter] = useState({
-    categories: state.filter,
-  });
+
   const history = useHistory();
   const handleSearch = async (e) => {
     e.preventDefault();
-    const { categories } = filter;
+    console.log(e.target.value)
     try {
       const res = await axios.post(
         `${process.env.REACT_APP_DOMAIN}/product/filter`,
-        {
-          categories,
-        }
+          {categories: e.target.value},
+
       );
       if (Array.isArray(res.data)) {
-        state.filter = categories;
         dispatch({
           type: CATEGORIES_PRODUCT,
           payload: res.data,
@@ -40,9 +36,7 @@ export default function FilerCategories() {
         document.querySelectorAll("input[type=checkbox]").forEach((el) => {
           if (!state.filter.includes(el.value)) el.checked = false;
         });
-        setFilter({
-          categories: state.filter,
-        });
+
         alertInfo(t("categoriesComp.noCats"));
         dispatch({
           type: FETCH_PRODUCTS,
@@ -54,17 +48,8 @@ export default function FilerCategories() {
     }
   };
 
-  function handleSelect(e) {
-    setFilter({
-      ...filter,
-      categories: deleted(filter.categories, e.target.value),
-    });
-  }
 
-  function deleted(array, sel) {
-    if (array.includes(sel)) return array.filter((num) => num !== sel);
-    return array.concat(sel);
-  }
+
   useEffect(() => {
     setRedirect(false);
   }, []);
@@ -80,26 +65,19 @@ export default function FilerCategories() {
       {redirect ? <Redirect push to="/categories" /> : null}
       <form
         onSubmit={(e) => {
-          handleSearch(e);
         }}
       >
         <div className="scroll-categories">
           {state.categories.map((categories) => (
-            <label
+            <option
               key={categories.name}
-              className="label-category dropdown-item category-list-item "
+              label={categories.name}
+              value={categories.id}
+
+              className="label-category dropdown-item category-list-item " onClick={handleSearch}
             >
               {categories.name}
-              <input
-                className="checkbox-category"
-                value={categories.id}
-                type=""
-                id={categories.name}
-                onChange={(e) => {
-                  handleSearch(e);
-                }}
-              />
-            </label>
+            </option>
           ))}
         </div>
         <li className="dropdown-divider"></li>

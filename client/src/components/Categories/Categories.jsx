@@ -5,7 +5,6 @@ import { Redirect, useHistory } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { Loader } from "../Loader/Loader";
 import "./categories.scss";
-import { handleDeleteFavorite, handleSaveFavorite } from "../Cart/actionsCart";
 import { useTranslation } from "react-i18next";
 import { alertInfo, alertSuccess, alertWarning } from "../../helpers/toast";
 import { IoSearchSharp } from "react-icons/io5";
@@ -29,24 +28,18 @@ export default function Categories() {
     }
   };
 
-  const handleSaveCart = (name, price, image, id, stock) => {
+  const handleSaveCart = (name, price, image, id) => {
     let quantity = 1;
     let totalPrice = price;
-    let products = { name, price, image, id, stock, quantity, totalPrice };
-    let value = cart.find((e) => e.name === name);
-    if (person) {
-      if (value) {
-        setInCart(false);
-        alertInfo(t("home.altAlreadyInCart"));
-        return;
-      } else {
-        setInCart(true);
-        setCart((cart) => [...cart, products]);
-        alertSuccess(t("home.altAddToCart"));
-      }
+    let products = { name, price, image, id, quantity};
+    let value = state.cart.find((e) => e.name === name);
+    if (value) {
+      setInCart(false);
+      alertInfo(t("home.altAlreadyInCart"));
     } else {
-      alertWarning(t("home.logInProducts"));
-      history.push("/login");
+      setInCart(true);
+      state.cart.push(products);
+      alertSuccess(t("home.altAddToCart"));
     }
   };
 
@@ -81,51 +74,25 @@ export default function Categories() {
 
   return (
     <div className="searched-container">
-      <div className="SortAndReset">
-        <div className="minMax-filter">
-          <span className="priceRangeText">
-            {t("categoriesComp.priceRange")}
-          </span>
-          {error && <p>{error}</p>}
-          <div className="searched-btn">
-          </div>
-        </div>
-        <div className="order-options">
-          <label className="order-label" htmlFor="">
-            {t("categoriesComp.sortBy")}
-          </label>
-
-        </div>
-      </div>
 
       {redirect ? <Redirect push to="/home" /> : null}
       <div className="section-products">
-        {state.products && state.favorites ? (
-          React.Children.toArray(
-            state.products.map((product) => {
-              if (product.status === "active") {
-                return (
-                  <ProductCard
+        {state.products.length>0? state.products.map((product) => {
+              if ( typeof (product.url_image) == "string" && product.url_image !== "") {
+                return (<ProductCard
+                    key={product.id}
                     id={product.id}
                     name={product.name}
                     stock={product.stock}
                     price={product.price}
-                    image={product.image}
+                    image={product.url_image}
+                    discount={product.discount}
                     handleSaveCart={handleSaveCart}
-                    handleSaveFavorite={handleSaveFavorite}
-                    handleDeleteFavorite={handleDeleteFavorite}
-                    isAdd={state.favorites.find((e) => e.id === product.id)}
-                  />
-                );
+                />)
               }
-              return null;
-            })
-          )
-        ) : (
-          <div className="container-loader">
-            <Loader />
-          </div>
-        )}
+            }):
+           null
+        }
       </div>
     </div>
   );

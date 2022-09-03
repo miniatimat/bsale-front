@@ -6,7 +6,6 @@ import Home from "./pages/Home/Home.jsx";
 import UserCart from "./pages/UserCart/UserCart.jsx";
 import Categories from "./components/Categories/Categories.jsx";
 import SearchedProducts from "./pages/SearchedProducts/SearchedProducts";
-import { FormBuys } from "./components/FormBuys/FormBuys";
 import { ToastContainer } from "react-toastify";
 
 //Cualquier ruta que tiene que solo estar disponible a usuario logueado, se le puede envolver en ProtectedRoutes
@@ -39,11 +38,6 @@ function App() {
           {/* USER CART */}
           <NavBar />
           <UserCart />
-        </Route>
-        <Route path="/buysProducts" exact>
-          {/* USER ACCOUNT DETAIL FORM */}
-          <NavBar />
-          <FormBuys />
         </Route>
       </Router>
     </>

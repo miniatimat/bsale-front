@@ -54,10 +54,7 @@ export default function NavBar() {
                 </ul>
               </li>
               <li className="nav-item white-text-nav ">
-                <Link to="/logIn">{t("guestNavBar.logIn")}</Link>
-              </li>
-              <li className="nav-item white-text-nav ">
-                <Link to="/logIn">{t("guestNavBar.cart")}</Link>
+                <Link to="/cart">{t("guestNavBar.cart")}</Link>
               </li>
             </ul>
           </div>
