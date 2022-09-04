@@ -1,15 +1,6 @@
 import React, {useEffect, useState} from "react";
-import { FreeMode, Navigation, Pagination } from "swiper";
-import { Swiper, SwiperSlide } from "swiper/react/swiper-react.js";
 import "./Home.scss";
-import banner1 from "media/banner1.jpg";
-import banner2 from "media/banner2.jpg";
-import banner4 from "media/banner4.jpg";
-import PromoCard from '../../components/PromoCard.jsx/PromoCard.jsx';
-import { BsCreditCard2Back } from "react-icons/bs";
-// import { TbTruck } from "react-icons/tb";
-import { TiArrowSync } from "react-icons/ti";
-import { AiOutlineStar } from "react-icons/ai";
+
 import { useTranslation } from "react-i18next";
 import {useStore} from "../../context/store";
 import {fetchCategories, fetchProducts} from "../../redux/actions/actions";

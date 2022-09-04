@@ -16,7 +16,7 @@ export default function NavBar() {
       >
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
-            <img src={logo} alt="" height="80" />
+            <img className="navbar-image" src={logo} alt="" height="80" />
           </Link>
 
           <button
@@ -27,6 +27,7 @@ export default function NavBar() {
             aria-controls="navbarSupportedContent"
             aria-expanded="false"
             aria-label="Toggle navigation"
+            style={{backgroundColor: "white"}}
           >
             <span className="navbar-toggler-icon"></span>
           </button>

@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import "./config/i18next-config"; // Con esto ya está invocado para usarse en cualquier parte.
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { StoreProvider } from "./context/store";

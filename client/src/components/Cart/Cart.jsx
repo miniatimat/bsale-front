@@ -1,41 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import React from "react";
+import { useHistory } from "react-router-dom";
 import { ProductCart } from "../ProductCart/ProductCart";
-
-import accounting from "accounting";
-import { useTranslation } from "react-i18next";
 import "./Cart.scss";
 import { useStore } from "../../context/store.js";
-import { alertInfo, alertSuccess, alertWarning } from "../../helpers/toast";
-import axios from "axios";
+import { alertInfo } from "../../helpers/toast";
 
 export const Cart = () => {
-  const { t } = useTranslation();
-  var user = JSON.parse(localStorage?.getItem("myUser"));
-  let local = JSON.parse(localStorage.getItem(user));
+  const user = JSON.parse(localStorage?.getItem("myUser"));
   const history = useHistory();
-  const [priceTotal, setPriceTotal] = useState(0);
   const [state, dispatch] = useStore();
-
-
-  let { search } = useLocation();
-  useEffect(() => {
-    if (search === "?buy=false") {
-      alertInfo(t("cart.cancelPurchaseSuccess"));
-    }
-    if (search === "?buy=noStock") {
-      alertWarning(t("cart.noStock"));
-      history.push('/home')
-    }
-    if (search === "?buy=true") {
-      localStorage.removeItem(user);
-      alertSuccess(t("cart.successfulPurchase"));
-      state.cart = [];
-    }
-
-
-  }, [search]);
-
 
 
   // FUNCION PARA VER EL STORAGE, NO BORRAR
@@ -45,11 +18,11 @@ export const Cart = () => {
 
   //Funcion para limpiar carro
   const clearCart = (e) => {
-    const answer = window.confirm(t("cart.confirmClearCart"));
+    const answer = window.confirm("Esta seguro que desea vaciar el carro?");
     if (answer) {
       state.cart = []
       localStorage?.removeItem(user);
-      alertInfo(t("cart.removeEverythingFromCart"));
+      alertInfo("Carro vaciado");
       setTimeout(() => {
         history.push("/home");
       }, 2000);
@@ -59,7 +32,7 @@ export const Cart = () => {
 
   return (
     <section className="cart-container">
-      <h2 className="cart-container-title">{t("cart.welcome")}</h2>
+      <h2 className="cart-container-title">{"Tu Carro"}</h2>
       <article className="cart-cards">
         {state.cart && state.cart?.length > 0 ? (
           React.Children.toArray(
@@ -74,7 +47,7 @@ export const Cart = () => {
             ))
           )
         ) : (
-          <h3>{t("cart.emptyCart")}</h3>
+          <h3>{"Tu carro esta vacio"}</h3>
         )}
       </article>
       <div className="cart-chechout-section">
@@ -84,7 +57,7 @@ export const Cart = () => {
             onClick={() => clearCart()}
             disabled={state.cart?.length < 1}
           >
-            {t("cart.emptyTheCart")}
+            {"Vaciar el carrito"}
           </button>
         ) : null}
       </div>

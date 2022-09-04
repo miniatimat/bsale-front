@@ -83,3 +83,12 @@
 .price p {
   cursor: pointer;
 }
+.priceAndBuy{
+  display: flex;
+  flex-flow: row;
+}
+
+.discounted{
+  color: red;
+  text-decoration-line: line-through;
+}
