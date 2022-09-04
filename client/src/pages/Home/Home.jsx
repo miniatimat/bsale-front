@@ -41,8 +41,6 @@ export default function Home() {
       alertSuccess(t("home.altAddToCart"));
     }
   };
-
-  console.log(state)
   return (
       <div className="searched-container">
 

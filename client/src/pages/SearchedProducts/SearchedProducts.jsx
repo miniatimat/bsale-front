@@ -52,7 +52,6 @@ export default function SearchedProducts() {
             }):
               <Redirect to="/home"/>
           }
-        }
       </div>
     </div>
   );
