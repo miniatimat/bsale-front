@@ -67,7 +67,7 @@ export const ProductCart = ({
           </p>
           <div className="cart-info-prices">
             <div className="cart-sum">
-              <span>{t("cart.qty") }{state.cart[pos].quantity}</span>
+              <span>{"Cantidad:" }{state.cart[pos].quantity}</span>
               <div className="cart-btn-sum">
                 {count !== stock ? (
                   <button

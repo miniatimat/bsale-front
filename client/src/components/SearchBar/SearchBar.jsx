@@ -1,32 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./SearchBar.scss";
-import icon from "../../media/search.png";
 import axios from "axios";
 import { SEARCH_PRODUCT } from "../../redux/actions/actionTypes";
 import { Link, Redirect } from "react-router-dom";
 import { useStore } from "../../context/store";
-import { useTranslation } from "react-i18next";
-import i18next from "i18next";
+import {searchProduct} from "../../redux/actions/actions";
+
 export default function SearchBar() {
-  const { t } = useTranslation();
   const [redirect, setRedirect] = useState(false);
   const [state, dispatch] = useStore();
   const [error, setError] = useState(false);
   const [input, setInput] = useState("");
   const [suggested, setSuggested] = useState([]);
-
-  function validate(value) {
-    var expression = /^[a-zA-ZÀ-ÿ\s]{1,40}$/;
-
-    if (!expression.test(value)) {
-      setError(t("errors.error_addressFormAlphaNumbers_validate"));
-    } else if (value === "") {
-      setError("");
-    }
-  }
-  const handleLanguage = (lang) => {
-    i18next.changeLanguage(lang);
-  };
 
 
   const handleChange = (e) => {

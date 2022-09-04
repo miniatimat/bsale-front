@@ -5,7 +5,7 @@ import {
   CATEGORIES_PRODUCT,
   FETCH_PRODUCTS,
 } from "../../redux/actions/actionTypes";
-import { fetchCategories } from "../../redux/actions/actions.js";
+import {fetchCategories, fetchProducts, filterByCategories} from "../../redux/actions/actions.js";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { alertInfo } from "../../helpers/toast";
@@ -19,46 +19,18 @@ export default function FilerCategories() {
   const handleSearch = async (e) => {
     e.preventDefault();
     console.log(e.target.value)
-    try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_DOMAIN}/product/filter`,
-          {categories: e.target.value},
 
-      );
-      if (Array.isArray(res.data)) {
-        dispatch({
-          type: CATEGORIES_PRODUCT,
-          payload: res.data,
-        });
-
-        setRedirect(true);
-      } else {
-        document.querySelectorAll("input[type=checkbox]").forEach((el) => {
-          if (!state.filter.includes(el.value)) el.checked = false;
-        });
-
-        alertInfo(t("categoriesComp.noCats"));
-        dispatch({
-          type: FETCH_PRODUCTS,
-          payload: state.products,
-        });
-      }
-    } catch (err) {
-      alert(err);
+    if (e.target.value === ""){
+      await fetchProducts(dispatch)
+    }else {
+      await filterByCategories(dispatch, e.target.value)
     }
   };
-
-
 
   useEffect(() => {
     setRedirect(false);
   }, []);
-  useEffect(() => {
-    fetchCategories(dispatch);
-    document.querySelectorAll("input[type=checkbox]").forEach((el) => {
-      if (state.filter.includes(el.value)) el.checked = true;
-    });
-  }, []);
+
 
   return (
     <section className="categories-section">

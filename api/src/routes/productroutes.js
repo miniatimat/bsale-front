@@ -33,7 +33,6 @@ router.post("/filter", async (req, res)=>{
 
 router.get("/search", async (req, res)=>{
   const {name} = req.query
-  console.log(name)
   try{
     const matchingProducts = await Product.findAll(
         {where:{

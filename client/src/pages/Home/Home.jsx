@@ -1,24 +1,16 @@
 import React, {useEffect, useState} from "react";
 import "./Home.scss";
-
-import { useTranslation } from "react-i18next";
 import {useStore} from "../../context/store";
 import {fetchCategories, fetchProducts} from "../../redux/actions/actions";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import {alertInfo, alertSuccess, alertWarning} from "../../helpers/toast";
+import {alertInfo, alertSuccess} from "../../helpers/toast";
 import {Redirect} from "react-router-dom";
 
 
-function NotFound() {
-  return null;
-}
-
 export default function Home() {
-  const { t } = useTranslation();
-  let initialCart = JSON.parse(localStorage.getItem("myCart")) || [];
   const [state, dispatch] = useStore();
   const [inCart, setInCart] = useState(false);
-  const [cart, setCart] = useState(initialCart);
+
 
 
 
@@ -29,16 +21,15 @@ export default function Home() {
 
   const handleSaveCart = (name, price, image, id) => {
     let quantity = 1;
-    let totalPrice = price;
     let products = { name, price, image, id, quantity};
     let value = state.cart.find((e) => e.name === name);
     if (value) {
       setInCart(false);
-      alertInfo(t("home.altAlreadyInCart"));
+      alertInfo("El producto ya esta en el carro");
     } else {
       setInCart(true);
       state.cart.push(products);
-      alertSuccess(t("home.altAddToCart"));
+      alertSuccess("Producto agregado al carro");
     }
   };
   return (
