@@ -3,7 +3,7 @@ import React from "react";
 import { BrowserRouter as Router, Redirect, Route } from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar.jsx";
 import Home from "./pages/Home/Home.jsx";
-import UserCart from "./pages/UserCart/UserCart.jsx";
+import UserCart from "./pages/Cart/UserCart.jsx";
 import Categories from "./components/Categories/Categories.jsx";
 import SearchedProducts from "./pages/SearchedProducts/SearchedProducts";
 import { ToastContainer } from "react-toastify";
