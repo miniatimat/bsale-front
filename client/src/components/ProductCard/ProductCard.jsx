@@ -11,82 +11,45 @@ export default function ProductCard({
   name,
   price,
   image,
-  rating,
   id,
-  stock,
+  discount,
   handleSaveCart,
-  handleSaveFavorite,
-  handleDeleteFavorite,
-  isAdd
 }) {
   const { t, i18n } = useTranslation()
-  const [changeButton, setChangeButton] = useState(isAdd);
   const history = useHistory();
   let myUser = JSON.parse(localStorage.getItem("myUser"));
 
-  useEffect(() => {
-    setChangeButton(isAdd);
-  }, [isAdd]);
-
-  const postFavorite = () => {
-    let person = JSON.parse(localStorage.getItem("myUser"));
-    if (!person) {
-      alertWarning(t("home.mustBeLoggedIn"))
-      setTimeout(() => {
-        history.push("/logIn");
-      }, 2000);
-    }
-    else {
-      setChangeButton(true);
-      handleSaveFavorite(id);
-      alertSuccess(t("home.altAddToFavs"))
-
-    }
-  };
-
-  const deleteFavorite = () => {
-    setChangeButton(false);
-    alertInfo(t("home.altRemoveFromFavorites"))
-    handleDeleteFavorite(id);
-  };
 
   const clickSaveCart = () => {
-    if (!myUser) {
-      history.push("/logIn");
-      return;
-    }
     let price = accounting.formatMoney(price, "U$D ", 0)
-    handleSaveCart(name, price, image, id, stock);
+    handleSaveCart(name, price, image, id);
   };
+
+  const discountedPrice = Math.floor(price*(100-discount)/100)
 
   return (
     <div className="card-clothe">
-      <Link to={`/home/${id}`}>
         <div className="card-body">
           <img className="card-image" src={`${image}`} alt={`${name}`} />
           <p className="card-title">{name}</p>
-          <p className="card-rating">{rating}</p>
         </div>
-      </Link>
       <div className="btn-wrapper">
         <button
           className="card-btn margin-1"
-          onClick={() => handleSaveCart(name, price, image, id, stock)}
+          onClick={() => handleSaveCart(name, price, image, id)}
         >
           <img className="cart-btn" src={shoppingCart} alt="add-cart" />
         </button>
-        {/* {changeButton ? (
-        <button className="shoppingCart-btn" onClick={() => deleteFavorite()}>
-          <img src={imgDeleteFavorite} alt="delete-favorite" />
-        </button>
-      ) : (
-        <button className="shoppingCart-btn" onClick={() => postFavorite()}>
-          <img src={imgAddFavorite} alt="add-favorite" />
-        </button>
-      )} */}
 
         <div className="price">
-          <p>${price}</p>
+          {discount > 0 ?
+              <div>
+                <p className="discounted">${price}</p>
+                <p>${discountedPrice}</p>
+              </div>
+              :
+              <p>${price}</p>
+          }
         </div>
       </div>
     </div>

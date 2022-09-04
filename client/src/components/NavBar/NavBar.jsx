@@ -12,7 +12,7 @@ export default function NavBar() {
     <div className="navbar-space">
       <nav
         className="navbar navbar-expand-lg navbar-light  fixed-top"
-        style={{ backgroundColor: "black" }}
+        style={{ backgroundColor: "darkorange" }}
       >
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">
@@ -36,7 +36,7 @@ export default function NavBar() {
           >
             <ul className="navbar-nav  justify-content-center ">
               <li className="nav-item white-text-nav">
-                <Link to="/">{t("loggedNavBar.home")}</Link>
+                <Link to="/">{"HOME"}</Link>
               </li>
               <li className="nav-item dropdown  white-text-nav">
                 <Link
@@ -47,14 +47,14 @@ export default function NavBar() {
                   data-bs-auto-close="outside"
                   aria-expanded="false"
                 >
-                  {t("loggedNavBar.categories")}
+                  {"categorias"}
                 </Link>
                 <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                   <FilterCategories />
                 </ul>
               </li>
               <li className="nav-item white-text-nav ">
-                <Link to="/cart">{t("guestNavBar.cart")}</Link>
+                <Link to="/cart">{"carrito"}</Link>
               </li>
             </ul>
           </div>

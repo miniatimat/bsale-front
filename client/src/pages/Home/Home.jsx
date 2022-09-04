@@ -15,6 +15,7 @@ import {useStore} from "../../context/store";
 import {fetchCategories, fetchProducts} from "../../redux/actions/actions";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import {alertInfo, alertSuccess, alertWarning} from "../../helpers/toast";
+import {Redirect} from "react-router-dom";
 
 
 function NotFound() {
@@ -52,12 +53,9 @@ export default function Home() {
 
   console.log(state)
   return (
-    <div className="color">
-      <div className="div-slide-vertical">
+      <div className="searched-container">
 
-      </div>
-      <div className="promo-container">
-        <div className="cardsContainer">
+        <div className="section-products">
           {state.products.length>0? state.products.map((product) => {
                 if ( typeof (product.url_image) == "string" && product.url_image !== "") {
                   return (<ProductCard
@@ -72,10 +70,9 @@ export default function Home() {
                   />)
                 }
               }):
-              <NotFound/>
+              <Redirect push to="/home"/>
           }
         </div>
       </div>
-    </div>
   );
 }

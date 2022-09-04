@@ -69,7 +69,7 @@ export default function SearchBar() {
             value={input}
             className="form-control search-bar "
             type="search"
-            placeholder={t("searchBar.placeholder")}
+            placeholder={"Buscar"}
             aria-label="Search"
             required
             onChange={handleChange}
@@ -91,32 +91,6 @@ export default function SearchBar() {
           ) : null}
         </div>
       </form>
-      <li className="nav-item dropdown white-text-nav-language language-list">
-        <Link
-          to=""
-          className="dropdown-toggle "
-          id="dropdownMenuClickableInside"
-          data-bs-toggle="dropdown"
-          data-bs-auto-close="outside"
-          aria-expanded="false"
-        >
-          {t("searchBar.language")}
-        </Link>
-        <ul className="dropdown-menu " aria-labelledby="navbarDropdown">
-          <li
-            className="dropdown-item category-list-item"
-            onClick={() => handleLanguage("en")}
-          >
-            <Link to="">En</Link>
-          </li>
-          <li
-            className="dropdown-item category-list-item"
-            onClick={() => handleLanguage("es")}
-          >
-            <Link to="">Es</Link>
-          </li>
-        </ul>
-      </li>
     </div>
   );
 }
