@@ -1,4 +1,3 @@
-# SoyHenry Final-Project
 <p align="left">
   <img height="150" src="./client/src/media/logonavbar.png" />
 </p>
